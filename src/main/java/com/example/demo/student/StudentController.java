@@ -3,8 +3,12 @@ package com.example.demo.student;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,20 +33,20 @@ public class StudentController {
     //     return studentService.getStudentById(id);
     // }    
 
-    // @PostMapping("/add")
-    // public void addNewStudent(Student student) {
-    //     studentService.addNewStudent(student);
-    // }
+    @PostMapping("/add")
+    public void addNewStudent(@RequestBody Student student) {
+        studentService.addNewStudent(student);
+    }
 
-    // @PostMapping("/delete/{id}")
-    // public void deleteStudent(Long id) {
-    //     studentService.deleteStudent(id);
-    // }
+    @DeleteMapping("/delete/{id}")
+    public void deleteStudent(@PathVariable("id") Long id) {
+        studentService.deleteStudent(id);
+    }
 
-    // @PostMapping("/update/{id}")
-    // public void updateStudent(Long id, Student student) {
-    //     studentService.updateStudent(id, student);
-    // }
+    @PutMapping("/update/{id}")
+    public void updateStudent(@PathVariable("id") Long id, @RequestBody Student student) {
+        studentService.updateStudent(id, student);
+    }
 
     // @GetMapping("/search")
     // public List<Student> findStudentsByName(String name) {

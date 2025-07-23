@@ -1,9 +1,12 @@
 package com.example.demo.student;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class StudentService {
@@ -26,6 +29,10 @@ public class StudentService {
 	}
 
 	public void addNewStudent(Student student) {
+		Optional<Student> studentOptional = studentRepository.findStudentsByEmail(student.getEmail());
+		if (studentOptional.isPresent()) {
+			throw new IllegalStateException("Email already taken");
+		}
 		studentRepository.save(student);
 	}
 
@@ -36,6 +43,7 @@ public class StudentService {
 		studentRepository.deleteById(id);
 	}
 
+	@Transactional
 	public void updateStudent(Long id, Student student) {
 		if (!studentRepository.existsById(id)) {
 			throw new IllegalStateException("Student with id " + id + " does not exist");
@@ -48,5 +56,9 @@ public class StudentService {
 		return studentRepository.findAll().stream()
 				.filter(student -> student.getName().equalsIgnoreCase(name))
 				.toList();
+	}
+
+	public Optional<Student> findStudentsByEmail(String email) {
+		return studentRepository.findStudentsByEmail(email);
 	}
 }
